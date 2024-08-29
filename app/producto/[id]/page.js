@@ -1,66 +1,93 @@
 "use client";
-import mockData from "@/app/data/mockData";
-import {
-  Dialog,
-  DialogBackdrop,
-  DialogPanel,
-  Radio,
-  RadioGroup,
-} from "@headlessui/react";
+import { useCartContext } from "@/app/context/CartContext";
+import { db } from "@/app/firebase/config";
 import {
   ArrowLeftIcon,
   ShoppingCartIcon,
   StarIcon,
-  XMarkIcon,
 } from "@heroicons/react/24/outline";
+import { collection, getDocs, query, where } from "firebase/firestore";
 import { useParams, useRouter } from "next/navigation";
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 const ProductoDetalle = () => {
   const router = useRouter();
   const { id } = useParams();
-  const singleProduct = mockData.find((product) => product.id == id);
+  const [loading, setLoading] = useState(true);
+  const [singleProduct, setSingleProduct] = useState(null);
+  const { addToCart } = useCartContext();
+
+  const getProduct = async (id) => {
+    try {
+      const productRef = collection(db, "productos");
+      const q = query(productRef, where("id", "==", parseInt(id)));
+      const querySnapshots = await getDocs(q);
+      if (!querySnapshots.empty) {
+        return querySnapshots.docs[0].data();
+      } else {
+        return [];
+      }
+    } catch (error) {
+      return console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      // setLoading(true);
+      const product = await getProduct(id);
+      setSingleProduct(product);
+      setLoading(false);
+    };
+    fetchProducts();
+  }, [id]);
 
   return (
     <>
-      <div className="relative flex w-full items-center overflow-hidden bg-white px-4 pb-8 pt-14 shadow-2xl md:px-6 md:pt-8 lg:p-8">
-        <button
-          type="button"
-          onClick={() => router.back()}
-          className="absolute right-4 top-4 text-gray-400 hover:text-gray-500 md:right-6 md:top-8 lg:right-8 lg:top-8"
-        >
-          <span className="sr-only">Volver</span>
-          <ArrowLeftIcon aria-hidden="true" className="h-6 w-6" />
-        </button>
+      {loading ? (
+        <div className="min-h-screen bg-white flex justify-center items-center ">
+          <h1 className="text-gray-500 text-4xl animate-pulse">Cargando...</h1>
+        </div>
+      ) : (
+        <div className="relative flex w-full items-center overflow-hidden bg-white px-4 pb-8 pt-14 shadow-2xl md:px-6 md:pt-8 lg:p-8">
+          <button
+            type="button"
+            onClick={() => router.back()}
+            className="absolute right-4 top-4 text-gray-400 hover:text-gray-500 md:right-6 md:top-8 lg:right-8 lg:top-8"
+          >
+            <span className="sr-only">Volver</span>
+            <ArrowLeftIcon aria-hidden="true" className="h-6 w-6" />
+          </button>
 
-        <div className="grid w-full grid-cols-1 items-start gap-x-6 gap-y-8 md:grid-cols-12 lg:gap-x-8">
-          <div className="aspect-h-3 aspect-w-2 overflow-hidden rounded-lg bg-gray-100 md:col-span-4 lg:col-span-5">
-            <img
-              alt={singleProduct.imageAlt}
-              src={singleProduct.imageSrc}
-              className="object-cover object-center"
-            />
-          </div>
-          <div className="md:col-span-8 lg:col-span-7">
-            <h2 className="text-2xl font-bold text-gray-900 sm:pr-12">
-              {singleProduct.title}
-            </h2>
+          <div className="grid w-full grid-cols-1 items-start gap-x-6 gap-y-8 md:grid-cols-12 lg:gap-x-8">
+            <div className="aspect-h-3 aspect-w-2 overflow-hidden rounded-lg bg-gray-100 md:col-span-4 lg:col-span-5">
+              <img
+                alt={singleProduct?.imageAlt}
+                src={singleProduct?.imageSrc}
+                className="object-cover object-center"
+              />
+            </div>
+            <div className="md:col-span-8 lg:col-span-7">
+              <h2 className="text-2xl font-bold text-gray-900 sm:pr-12">
+                {singleProduct?.title}
+              </h2>
 
-            <section aria-labelledby="information-heading" className="mt-2">
-              <h3 id="information-heading" className="sr-only">
-                Product information
-              </h3>
-              <span className="mb-4 inline-block rounded-full bg-gray-400 px-3 py-1 text-center align-baseline text-[0.75em] font-bold leading-none text-primary-700 hover:bg-gray-400 group-hover:bg-gray-300 dark:text-primary-500">
-                {singleProduct.category}
-              </span>
+              <section aria-labelledby="information-heading" className="mt-2">
+                <h3 id="information-heading" className="sr-only">
+                  Product information
+                </h3>
+                <span className="mb-4 inline-block rounded-full bg-gray-400 px-3 py-1 text-center align-baseline text-[0.75em] font-bold leading-none text-primary-700 hover:bg-gray-400 group-hover:bg-gray-300 dark:text-primary-500">
+                  {singleProduct?.category.charAt(0).toUpperCase() +
+                    singleProduct?.category.slice(1).toLowerCase()}
+                </span>
 
-              <p className="text-2xl text-gray-900">{`$${singleProduct.price}`}</p>
+                <p className="text-2xl text-gray-900">{`$${singleProduct?.price.toLocaleString()}`}</p>
 
-              {/* Reviews */}
-              <div className="mt-6">
-                <h4 className="sr-only">Reviews</h4>
-                <div className="flex items-center">
-                  {/* <div className="flex items-center">
+                {/* Reviews */}
+                <div className="mt-6">
+                  <h4 className="sr-only">Reviews</h4>
+                  <div className="flex items-center">
+                    {/* <div className="flex items-center">
                           {[0, 1, 2, 3, 4].map((rating) => (
                             <StarIcon
                               key={rating}
@@ -83,43 +110,43 @@ const ProductoDetalle = () => {
                         >
                           {product.reviewCount} reviews
                         </a> */}
+                  </div>
                 </div>
-              </div>
-            </section>
+              </section>
 
-            <section aria-labelledby="options-heading" className="mt-10">
-              <h3 id="options-heading" className="sr-only">
-                Product options
-              </h3>
+              <section aria-labelledby="options-heading" className="mt-10">
+                <h3 id="options-heading" className="sr-only">
+                  Product options
+                </h3>
 
-              <div>
-                <h3 className="sr-only">Description</h3>
+                <div>
+                  <h3 className="sr-only">Description</h3>
 
-                <div className="space-y-6">
-                  <p className="text-base text-gray-900">
-                    {singleProduct.description}
-                  </p>
+                  <div className="space-y-6">
+                    <p className="text-base text-gray-900">
+                      {singleProduct?.description}
+                    </p>
+                  </div>
                 </div>
-              </div>
 
-              <div className="flex flex-col mt-10 gap-y-4 md:gap-4 md:flex-row">
-                <button
-                  type="submit"
-                  className="gap-3 flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 "
-                >
-                  <ShoppingCartIcon aria-hidden="true" className="h-6 w-6" />
-                  Añadir al carrito
-                </button>
-                <button
-                  type="submit"
-                  className="gap-3 flex w-full items-center justify-center rounded-md border border-transparent bg-neutral-400 px-8 py-3 text-base font-medium text-white hover:bg-amber-300 focus:bg-amber-400"
-                >
-                  <StarIcon aria-hidden="true" className="h-6 w-6" />
-                  Favorito
-                </button>
-              </div>
+                <div className="flex flex-col mt-10 gap-y-4 md:gap-4 md:flex-row">
+                  <button
+                    onClick={() => addToCart(singleProduct)}
+                    className="gap-3 flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 "
+                  >
+                    <ShoppingCartIcon aria-hidden="true" className="h-6 w-6" />
+                    Añadir al carrito
+                  </button>
+                  <button
+                    type="submit"
+                    className="gap-3 flex w-full items-center justify-center rounded-md border border-transparent bg-neutral-400 px-8 py-3 text-base font-medium text-white hover:bg-amber-300 focus:bg-amber-400"
+                  >
+                    <StarIcon aria-hidden="true" className="h-6 w-6" />
+                    Favorito
+                  </button>
+                </div>
 
-              {/* <div className="mt-10">
+                {/* <div className="mt-10">
                 <h2 className="text-sm font-medium text-gray-900">Details</h2>
 
                 <div className="mt-4 space-y-6">
@@ -127,7 +154,7 @@ const ProductoDetalle = () => {
                 </div>
               </div> */}
 
-              {/* <form>
+                {/* <form>
                       
                       <fieldset aria-label="Choose a color">
                         <legend className="text-sm font-medium text-gray-900">
@@ -231,10 +258,11 @@ const ProductoDetalle = () => {
                         Add to bag
                       </button>
                     </form> */}
-            </section>
+              </section>
+            </div>
           </div>
         </div>
-      </div>
+      )}
     </>
   );
 };

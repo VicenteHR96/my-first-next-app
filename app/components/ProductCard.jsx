@@ -29,10 +29,11 @@ const ProductCard = ({
           </p>
           <div className="mt-3 flex justify-between">
             <span className="inline-block rounded-full bg-indigo-600 px-3 py-1 text-center align-baseline text-[0.75em] font-bold leading-none text-primary-700  group-hover:bg-indigo-400 dark:text-primary-500">
-              {`$${price}`}
+              {`$${price.toLocaleString()}`}
             </span>
             <span className="inline-block rounded-full bg-gray-400 px-3 py-1 text-center align-baseline text-[0.75em] font-bold leading-none text-primary-700 hover:bg-gray-400 group-hover:bg-gray-300 dark:text-primary-500">
-              {category}
+              {category.charAt(0).toUpperCase() +
+                category.slice(1).toLowerCase()}
             </span>
           </div>
         </div>

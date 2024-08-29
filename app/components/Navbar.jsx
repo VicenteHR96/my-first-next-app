@@ -11,7 +11,6 @@ import {
 import {
   ArrowLeftStartOnRectangleIcon,
   Bars3Icon,
-  BellIcon,
   Cog6ToothIcon,
   ShoppingCartIcon,
   UserCircleIcon,
@@ -19,8 +18,7 @@ import {
 } from "@heroicons/react/24/outline";
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
-import Cart from "./Cart";
+import { useCartContext } from "../context/CartContext";
 
 const navigation = [
   { name: "Inicio", href: "/", current: false },
@@ -34,7 +32,9 @@ function classNames(...classes) {
 }
 
 export default function Navbar() {
-  const [cartOpen, setCartOpen] = useState(false);
+  const { cart } = useCartContext();
+  const qty = cart.length;
+  console.log(qty);
   return (
     <>
       <Disclosure as="nav" className="bg-gray-800">
@@ -95,6 +95,11 @@ export default function Navbar() {
                 <span className="absolute -inset-1.5" />
                 <span className="sr-only">View notifications</span>
                 <ShoppingCartIcon aria-hidden="true" className="h-6 w-6" />
+                {qty > 0 ? (
+                  <span className="absolute w-[16px] h-[16px] bg-red-600 rounded-full flex items-center justify-center bottom-5 left-5">
+                    <p className="text-white text-xs">{qty}</p>
+                  </span>
+                ) : null}
               </Link>
               {/* <Menu as="div" className="relative ml-3">
                 <MenuButton
@@ -178,7 +183,7 @@ export default function Navbar() {
             {navigation.map((item) => (
               <DisclosureButton
                 key={item.name}
-                as="Link"
+                as={Link}
                 href={item.href}
                 aria-current={item.current ? "page" : undefined}
                 className={classNames(
