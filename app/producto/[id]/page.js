@@ -20,7 +20,7 @@ const ProductoDetalle = () => {
   const getProduct = async (id) => {
     try {
       const productRef = collection(db, "productos");
-      const q = query(productRef, where("id", "==", parseInt(id)));
+      const q = query(productRef, where("id", "==", id));
       const querySnapshots = await getDocs(q);
       if (!querySnapshots.empty) {
         return querySnapshots.docs[0].data();

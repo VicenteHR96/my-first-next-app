@@ -85,6 +85,13 @@ export default function MenuPerfil({ content }) {
                     </li>
                   ))}
                 </ul>
+                <div className="flex justify-center">
+                  <Link href={"/perfil/crear"}>
+                    <button className="mt-4 rounded-md px-8 bg-green-500 px-3.5 py-2.5 text-xs font-semibold text-white shadow-sm hover:bg-green-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+                      Agregar producto
+                    </button>
+                  </Link>
+                </div>
               </form>
             </DialogPanel>
           </div>
@@ -143,6 +150,13 @@ export default function MenuPerfil({ content }) {
                     </li>
                   ))}
                 </ul>
+                <div>
+                  <Link href={"/perfil/crear"}>
+                    <button className="mt-4 rounded-md px-8 bg-green-500 px-3.5 py-2.5 text-xs font-semibold text-white shadow-sm hover:bg-green-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+                      Agregar producto
+                    </button>
+                  </Link>
+                </div>
               </form>
 
               {/* Product grid */}

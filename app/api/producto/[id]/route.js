@@ -1,21 +1,15 @@
-// import { NextResponse } from "next/server";
+import { db } from "@/app/firebase/config";
+import { doc, getDoc } from "firebase/firestore";
+import { NextResponse } from "next/server";
 
-// const { URLBASE } = require("@/app/config/constants");
+export async function GET(_, { params }) {
+  const { id } = params;
 
-// const getProductById = async (id) => {
-//   const product = await fetch(`${URLBASE}/producto/${id}`);
-//   const data = await product.json();
-//   return data;
-// };
-
-// export async function GET(request, { params }) {
-//   const { id } = params;
-//   const product = await getProductById(id);
-//   if (!product) {
-//     return NextResponse.json(
-//       { error: "Producto no encontrado" },
-//       { status: 404 }
-//     );
-//   }
-//   return NextResponse.json(product);
-// }
+  try {
+    const docRef = doc(db, "productos", id);
+    const docSnapshot = await getDoc(docRef);
+    return NextResponse.json(docSnapshot.data());
+  } catch (error) {
+    return console.log(error);
+  }
+}

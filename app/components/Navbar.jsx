@@ -11,6 +11,7 @@ import {
 import {
   ArrowLeftStartOnRectangleIcon,
   Bars3Icon,
+  BuildingStorefrontIcon,
   Cog6ToothIcon,
   ShoppingCartIcon,
   UserCircleIcon,
@@ -149,6 +150,18 @@ export default function Navbar() {
                     >
                       <UserCircleIcon aria-hidden="true" className="h-5 w-5" />
                       Perfil
+                    </Link>
+                  </MenuItem>
+                  <MenuItem>
+                    <Link
+                      href="/perfil/publicaciones"
+                      className="flex gap-2 px-4 py-2 text-sm text-gray-700 data-[focus]:bg-gray-100"
+                    >
+                      <BuildingStorefrontIcon
+                        aria-hidden="true"
+                        className="h-5 w-5"
+                      />
+                      Publicaciones
                     </Link>
                   </MenuItem>
                   <MenuItem>
