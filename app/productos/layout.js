@@ -9,7 +9,9 @@ export const metadata = {
 const Layout = ({ children }) => {
   return (
     <>
-      <MenuCategoria content={children} />
+      <div className="flex-grow bg-white">
+        <MenuCategoria content={children} />
+      </div>
     </>
   );
 };

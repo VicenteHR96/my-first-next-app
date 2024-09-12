@@ -11,16 +11,17 @@ import { useCartContext } from "../context/CartContext";
 
 const Carrito = () => {
   const router = useRouter();
-  const { cart } = useCartContext(); //Carrito Front (context)
+  const { cart, removeFromCart, handleDecrease, handleIncrease } =
+    useCartContext(); //Carrito Front (context)
   // Calcular el subtotal
   const subtotal = cart.reduce((total, product) => {
-    const price = parseFloat(product.price);
+    const price = parseFloat(product.price * product.quantity);
     return total + price;
   }, 0);
 
   return (
-    <>
-      <div className="grid grid-cols-1 h-full gap-x-5 gap-y-5 bg-gray-100 shadow-xl lg:grid-cols-4 lg:p-8">
+    <div className="flex-grow bg-gray-100">
+      <div className="grid grid-cols-1 h-full gap-x-5 gap-y-5 lg:grid-cols-4 lg:p-8">
         <div className="flex-1 overflow-y-auto bg-white rounded-lg px-4 py-6 sm:px-6 lg:col-span-3">
           <div className="flex items-start justify-between">
             <div className="ml-3 flex h-7 items-center">
@@ -64,14 +65,26 @@ const Carrito = () => {
                         <div className="flex flex-1 items-end justify-between text-sm">
                           <div className="flex gap-3">
                             <p className="text-gray-500">Cantidad:</p>
-                            <button className="bg-neutral-300 rounded-full text-gray-500 transition hover:bg-neutral-400">
+                            <button
+                              onClick={() => handleDecrease(product)}
+                              className="bg-red-600 rounded-full text-white transition hover:bg-red-400"
+                            >
                               <MinusIcon
                                 aria-hidden="true"
                                 className="h-5 w-5"
                               ></MinusIcon>
                             </button>
-                            <span className="text-gray-500">1</span>
-                            <button className="bg-neutral-300 rounded-full text-gray-500 transition hover:bg-neutral-400">
+                            <span className="text-gray-500">
+                              {product.quantity}
+                            </span>
+                            <button
+                              onClick={() => handleIncrease(product)}
+                              className={`${
+                                product.quantity >= product.inStock
+                                  ? "bg-gray-400"
+                                  : "bg-indigo-600 hover:bg-indigo-400"
+                              } rounded-full text-white transition`}
+                            >
                               <PlusIcon
                                 aria-hidden="true"
                                 className="h-5 w-5"
@@ -82,6 +95,7 @@ const Carrito = () => {
                           <div className="flex">
                             <button
                               type="button"
+                              onClick={() => removeFromCart(product.id)}
                               className="font-medium text-indigo-600 hover:text-indigo-500"
                             >
                               Eliminar
@@ -145,7 +159,7 @@ const Carrito = () => {
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

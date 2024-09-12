@@ -4,7 +4,7 @@ import { useState } from "react";
 import { Field, Label, Switch } from "@headlessui/react";
 import { PhotoIcon } from "@heroicons/react/24/outline";
 import { doc, setDoc, updateDoc } from "firebase/firestore";
-import { db, storage } from "../firebase/config";
+import { db, storage } from "../../firebase/config";
 import { v4 as uuidv4 } from "uuid";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import Swal from "sweetalert2";

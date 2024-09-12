@@ -1,17 +1,28 @@
-import React from "react";
+"use client";
+
+import React, { useEffect } from "react";
 import MenuPerfil from "../components/MenuPerfil";
+import { useAuthContext } from "../context/AuthContext";
 
-export const metadata = {
-  title: "Perfil - Capellari Tienda Oficial",
-  description: "Encuentra los mejores electrodomésticos aquí.",
-};
+// export const metadata = {
+//   title: "Perfil - Capellari Tienda Oficial",
+//   description: "Encuentra los mejores electrodomésticos aquí.",
+// };
 
-const Layout = ({ children }) => {
+const PerfilLayout = ({ children, login }) => {
+  const { user } = useAuthContext();
+
   return (
     <>
-      <MenuPerfil content={children} />
+      {user.logged ? (
+        <div className="flex-grow bg-white">
+          <MenuPerfil content={children} />
+        </div>
+      ) : (
+        login
+      )}
     </>
   );
 };
 
-export default Layout;
+export default PerfilLayout;

@@ -1,5 +1,4 @@
-import CreateForm from "@/app/components/CreateForm";
-import EditForm from "@/app/components/EditForm";
+import EditForm from "@/app/components/admin/EditForm";
 import { db } from "@/app/firebase/config";
 import { collection, getDoc, getDocs, query, where } from "firebase/firestore";
 import { ref } from "firebase/storage";

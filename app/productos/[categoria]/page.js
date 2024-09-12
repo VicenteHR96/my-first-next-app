@@ -1,4 +1,5 @@
 import ProductList from "@/app/components/ProductList";
+import { URLBASE } from "@/app/config/constants";
 import { db } from "@/app/firebase/config";
 import { collection, getDocs, query, where } from "firebase/firestore";
 import { Suspense } from "react";
@@ -22,38 +23,37 @@ export function generateStaticParams() {
 
 export const revalidate = 3600;
 
+// const getFilteredProducts = async (categoria) => {
+//   try {
+//     const productRef = collection(db, "productos");
+//     let q;
+//     if (categoria === "all") {
+//       q = query(productRef);
+//     } else {
+//       q = query(productRef, where("category", "==", categoria));
+//     }
+//     const querySnapshots = await getDocs(q);
+//     const docs = querySnapshots.docs.map((doc) => doc.data());
+//     return docs;
+//   } catch (error) {}
+// };
+
 const getFilteredProducts = async (categoria) => {
-  try {
-    const productRef = collection(db, "productos");
-    let q;
-    if (categoria === "all") {
-      q = query(productRef);
-    } else {
-      q = query(productRef, where("category", "==", categoria));
-    }
-    const querySnapshots = await getDocs(q);
-    const docs = querySnapshots.docs.map((doc) => doc.data());
-    return docs;
-  } catch (error) {}
+  const data = await fetch(`${URLBASE}/api/productos/${categoria}`, {
+    cache: "no-store",
+  });
+  const products = await data.json();
+  return products;
 };
 
 const Categoria = async ({ params }) => {
   const { categoria } = params;
+  console.log(categoria);
   const filteredProducts = await getFilteredProducts(categoria);
 
   return (
     <>
-      <Suspense
-        fallback={
-          <div className="min-h-screen bg-white flex justify-center items-center ">
-            <h1 className="text-gray-500 text-4xl animate-pulse">
-              Cargando...
-            </h1>
-          </div>
-        }
-      >
-        <ProductList category={"all"} data={filteredProducts} />
-      </Suspense>
+      <ProductList category={categoria} data={filteredProducts} />
     </>
   );
 };

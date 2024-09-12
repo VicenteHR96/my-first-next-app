@@ -2,9 +2,9 @@ import { db } from "@/app/firebase/config";
 import { collection, getDocs, query } from "firebase/firestore";
 import { NextResponse } from "next/server";
 
-const sleep = (timer) => {
-  return new Promise((resolve) => setTimeout(resolve, timer));
-};
+// const sleep = (timer) => {
+//   return new Promise((resolve) => setTimeout(resolve, timer));
+// };
 
 export async function GET(request) {
   try {
@@ -13,7 +13,7 @@ export async function GET(request) {
     q = query(productRef);
     const querySnapshots = await getDocs(q);
     const docs = querySnapshots.docs.map((doc) => doc.data());
-    await sleep(3000);
+    // await sleep(3000);
     return NextResponse.json(docs);
   } catch (error) {}
 }

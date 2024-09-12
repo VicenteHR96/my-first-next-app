@@ -9,14 +9,7 @@ import {
 } from "@heroicons/react/24/outline";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
-
-const subCategories = [
-  { name: "Mis datos", href: "" },
-  { name: "Mis favoritos", href: "/favoritos" },
-  { name: "Mis publicaciones", href: "/publicaciones" },
-  //   { name: "Hip Bags", href: "#" },
-  //   { name: "Laptop Sleeves", href: "#" },
-];
+import { useAuthContext } from "../context/AuthContext";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -25,6 +18,17 @@ function classNames(...classes) {
 export default function MenuPerfil({ content }) {
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
   const path = usePathname();
+  const { values } = useAuthContext();
+
+  const subCategories = [
+    { name: "Mis datos", href: "" },
+    { name: "Mis favoritos", href: "/favoritos" },
+    ...(values.roll === "admin"
+      ? [{ name: "Mis publicaciones", href: "/publicaciones" }]
+      : []),
+    //   { name: "Hip Bags", href: "#" },
+    //   { name: "Laptop Sleeves", href: "#" },
+  ];
 
   return (
     <div className="bg-white">
@@ -63,7 +67,7 @@ export default function MenuPerfil({ content }) {
               <form className="mt-4 border-t border-gray-200">
                 <h3 className="sr-only">Categories</h3>
                 <ul role="list" className="px-2 py-3 font-medium text-gray-900">
-                  {subCategories.map((category) => (
+                  {/* {subCategories.map((category) => (
                     <li
                       key={category.name}
                       className={`${
@@ -83,15 +87,70 @@ export default function MenuPerfil({ content }) {
                         {category.name}
                       </Link>
                     </li>
-                  ))}
+                  ))} */}
+                  <li
+                    key="perfil"
+                    className={`${
+                      path === "/perfil"
+                        ? "transition translate-x-1 text-indigo-500"
+                        : "transition"
+                    } pt-10`}
+                  >
+                    <Link
+                      href={`/perfil`}
+                      className={`flex items-center gap-2`}
+                    >
+                      <ArrowRightIcon aria-hidden="true" className="h-4 w-4" />
+                      Mis Datos
+                    </Link>
+                  </li>
+                  <li
+                    key="favoritos"
+                    className={`${
+                      path === "/perfil/favoritos"
+                        ? "transition translate-x-1 text-indigo-500"
+                        : "transition"
+                    }  pt-10`}
+                  >
+                    <Link
+                      href={`/perfil/favoritos`}
+                      className={`flex items-center gap-2`}
+                    >
+                      <ArrowRightIcon aria-hidden="true" className="h-4 w-4" />
+                      Favoritos
+                    </Link>
+                  </li>
+                  {values.rol === "admin" ? (
+                    <li
+                      key="publicaciones"
+                      className={`${
+                        path === "/perfil/publicaciones"
+                          ? "transition translate-x-1 text-indigo-500"
+                          : "transition"
+                      }  pt-10`}
+                    >
+                      <Link
+                        href={`/perfil/publicaciones`}
+                        className={`flex items-center gap-2`}
+                      >
+                        <ArrowRightIcon
+                          aria-hidden="true"
+                          className="h-4 w-4"
+                        />
+                        Publicaciones
+                      </Link>
+                    </li>
+                  ) : null}
                 </ul>
-                <div className="flex justify-center">
-                  <Link href={"/perfil/crear"}>
-                    <button className="mt-4 rounded-md px-8 bg-green-500 px-3.5 py-2.5 text-xs font-semibold text-white shadow-sm hover:bg-green-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
-                      Agregar producto
-                    </button>
-                  </Link>
-                </div>
+                {values.rol === "admin" ? (
+                  <div className="flex justify-center">
+                    <Link href={"/perfil/crear"}>
+                      <button className="mt-10 rounded-md px-8 bg-green-500 px-3.5 py-2.5 text-xs font-semibold text-white shadow-sm hover:bg-green-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+                        Agregar producto
+                      </button>
+                    </Link>
+                  </div>
+                ) : null}
               </form>
             </DialogPanel>
           </div>
@@ -128,7 +187,7 @@ export default function MenuPerfil({ content }) {
                   role="list"
                   className="space-y-4 border-b border-gray-200 pb-6 text-sm font-medium text-gray-900"
                 >
-                  {subCategories.map((category) => (
+                  {/* {subCategories.map((category) => (
                     <li
                       key={category.name}
                       className={`${
@@ -148,15 +207,72 @@ export default function MenuPerfil({ content }) {
                         {category.name}
                       </Link>
                     </li>
-                  ))}
+                  ))} */}
+
+                  {/* Nuevo  */}
+                  <li
+                    key="perfil"
+                    className={`${
+                      path === "/perfil"
+                        ? "transition translate-x-1 text-indigo-500"
+                        : "transition"
+                    }`}
+                  >
+                    <Link
+                      href={`/perfil`}
+                      className={`flex items-center gap-2`}
+                    >
+                      <ArrowRightIcon aria-hidden="true" className="h-4 w-4" />
+                      Mis Datos
+                    </Link>
+                  </li>
+                  <li
+                    key="favoritos"
+                    className={`${
+                      path === "/perfil/favoritos"
+                        ? "transition translate-x-1 text-indigo-500"
+                        : "transition"
+                    }`}
+                  >
+                    <Link
+                      href={`/perfil/favoritos`}
+                      className={`flex items-center gap-2`}
+                    >
+                      <ArrowRightIcon aria-hidden="true" className="h-4 w-4" />
+                      Favoritos
+                    </Link>
+                  </li>
+                  {values.rol === "admin" ? (
+                    <li
+                      key="publicaciones"
+                      className={`${
+                        path === "/perfil/publicaciones"
+                          ? "transition translate-x-1 text-indigo-500"
+                          : "transition"
+                      }`}
+                    >
+                      <Link
+                        href={`/perfil/publicaciones`}
+                        className={`flex items-center gap-2`}
+                      >
+                        <ArrowRightIcon
+                          aria-hidden="true"
+                          className="h-4 w-4"
+                        />
+                        Publicaciones
+                      </Link>
+                    </li>
+                  ) : null}
                 </ul>
-                <div>
-                  <Link href={"/perfil/crear"}>
-                    <button className="mt-4 rounded-md px-8 bg-green-500 px-3.5 py-2.5 text-xs font-semibold text-white shadow-sm hover:bg-green-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
-                      Agregar producto
-                    </button>
-                  </Link>
-                </div>
+                {values.rol === "admin" ? (
+                  <div>
+                    <Link href={"/perfil/crear"}>
+                      <button className="mt-4 rounded-md px-8 bg-green-500 px-3.5 py-2.5 text-xs font-semibold text-white shadow-sm hover:bg-green-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+                        Agregar producto
+                      </button>
+                    </Link>
+                  </div>
+                ) : null}
               </form>
 
               {/* Product grid */}

@@ -7,8 +7,8 @@ const Construccion = () => {
   const router = useRouter();
 
   return (
-    <>
-      <main className="grid min-h-full place-items-center bg-white px-6 py-24 sm:py-32 lg:px-8">
+    <div className="flex-grow bg-white">
+      <main className="grid h-full place-items-center bg-white px-6 py-24 sm:py-32 lg:px-8">
         <div className="text-center">
           <div className="w-full flex justify-center">
             <Image
@@ -35,7 +35,7 @@ const Construccion = () => {
           </div>
         </div>
       </main>
-    </>
+    </div>
   );
 };
 
