@@ -3,7 +3,9 @@ import { URLBASE } from "@/app/config/constants";
 import React from "react";
 
 const getProducts = async () => {
-  const data = await fetch(`${URLBASE}/api/productos`, { cache: "no-store" });
+  const data = await fetch(`${process.env.VERCEL_URL}/api/productos`, {
+    cache: "no-store",
+  });
   const products = await data.json();
   return products;
 };
