@@ -151,7 +151,7 @@ const ProductoDetalle = () => {
                       validateFav
                         ? "bg-amber-400 text-white hover:bg-amber-300 hover:text-white"
                         : "bg-white text-gray-500 border-1 border-gray-500 hover:bg-neutral-200 hover:border-0"
-                    } gap-3 flex w-full items-center justify-center rounded-md border border-transparent bg-neutral-400 px-8 py-3 text-base font-medium`}
+                    } gap-3 flex w-full items-center justify-center rounded-md px-8 py-3 text-base font-medium`}
                   >
                     <StarIcon aria-hidden="true" className="h-6 w-6" />
                     {validateFav ? "Favorito" : "Añadir a favoritos"}
