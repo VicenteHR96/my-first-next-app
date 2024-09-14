@@ -40,7 +40,7 @@ export const revalidate = 3600;
 
 const getFilteredProducts = async (categoria) => {
   const data = await fetch(
-    `${process.env.VERCEL_URL}/api/productos/${categoria}`,
+    `https://${process.env.VERCEL_URL}/api/productos/${categoria}`,
     {
       cache: "no-store",
     }
