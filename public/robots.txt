@@ -1,0 +1,3 @@
+User-agent: *
+Disallow: /perfil/
+Sitemap: https://capellari.vercel.app/sitemap.xml
