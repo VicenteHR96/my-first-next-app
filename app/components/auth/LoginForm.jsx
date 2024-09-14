@@ -3,6 +3,7 @@
 import { useAuthContext } from "@/app/context/AuthContext";
 import { useState } from "react";
 import GoogleIcon from "../icons/GoogleIcon";
+import Image from "next/image";
 
 export default function LoginForm() {
   const { registerUser, loginUser, googleLogin } = useAuthContext();
@@ -24,21 +25,20 @@ export default function LoginForm() {
 
   return (
     <>
-      {/*
-          This example requires updating your template:
-  
-          ```
-          <html class="h-full bg-white">
-          <body class="h-full">
-          ```
-        */}
       {/* <div className="fixed w-screen h-screen inset-0 z-10 flex justify-center items-center bg-blue-400 bg-opacity-25"> */}
       <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-20 bg-white lg:px-8">
         <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-          <img
+          {/* <img
             alt="Your Company"
             src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
             className="mx-auto h-10 w-auto"
+          /> */}
+          <Image
+            src={"/capellari-logo-color.png"}
+            alt="Capellari logo"
+            height={70}
+            width={70}
+            className="mx-auto"
           />
           <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
             Sign in to your account

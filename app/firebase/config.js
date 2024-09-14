@@ -9,13 +9,15 @@ import { getAuth, GoogleAuthProvider } from "firebase/auth";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyC_c4AOF0gbGx5L8YbqZqxGHMi9iYKAaiQ",
-  authDomain: "ecommercecoder-app.firebaseapp.com",
-  projectId: "ecommercecoder-app",
-  storageBucket: "ecommercecoder-app.appspot.com",
-  messagingSenderId: "409714691452",
-  appId: "1:409714691452:web:7fa9e87e5e1c6137c2a8f9",
+  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
+  authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
+  projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
+  storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
 };
+
+console.log("API Key:", process.env.NEXT_PUBLIC_FIREBASE_API_KEY);
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);

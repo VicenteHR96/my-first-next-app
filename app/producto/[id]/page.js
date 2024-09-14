@@ -1,5 +1,6 @@
 "use client";
 import { useCartContext } from "@/app/context/CartContext";
+import { useFavContext } from "@/app/context/FavContext";
 import { db } from "@/app/firebase/config";
 import {
   ArrowLeftIcon,
@@ -16,13 +17,15 @@ const ProductoDetalle = () => {
   const [loading, setLoading] = useState(true);
   const [singleProduct, setSingleProduct] = useState(null);
   const { addToCart, cart } = useCartContext();
+  const { addToFav, removeFromFav, fav } = useFavContext();
   // Verifica si el producto ya está en el carrito
   const isProductInCart = cart.find((item) => item.id === id);
   const validateStock = isProductInCart
     ? isProductInCart.quantity == isProductInCart.inStock
     : false;
-  console.log("VS: " + validateStock);
-  console.dir(isProductInCart);
+  const isProductInFav = fav.find((item) => item.id === id);
+  const validateFav = isProductInFav ? true : false;
+  console.log(validateFav);
 
   const getProduct = async (id) => {
     try {
@@ -139,11 +142,19 @@ const ProductoDetalle = () => {
                     Añadir al carrito
                   </button>
                   <button
-                    type="submit"
-                    className="gap-3 flex w-full items-center justify-center rounded-md border border-transparent bg-neutral-400 px-8 py-3 text-base font-medium text-white hover:bg-amber-300 focus:bg-amber-400"
+                    onClick={
+                      validateFav
+                        ? () => removeFromFav(singleProduct.id)
+                        : () => addToFav(singleProduct)
+                    }
+                    className={`${
+                      validateFav
+                        ? "bg-amber-400 text-white hover:bg-amber-300 hover:text-white"
+                        : "bg-white text-gray-500 border-1 border-gray-500 hover:bg-neutral-200 hover:border-0"
+                    } gap-3 flex w-full items-center justify-center rounded-md border border-transparent bg-neutral-400 px-8 py-3 text-base font-medium`}
                   >
                     <StarIcon aria-hidden="true" className="h-6 w-6" />
-                    Favorito
+                    {validateFav ? "Favorito" : "Añadir a favoritos"}
                   </button>
                 </div>
               </section>

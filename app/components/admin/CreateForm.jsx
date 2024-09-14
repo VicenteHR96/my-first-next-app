@@ -76,9 +76,9 @@ export default function CreateForm() {
         <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
           Publica un producto
         </h2>
-        <p className="mt-2 text-lg leading-8 text-gray-600">
+        {/* <p className="mt-2 text-lg leading-8 text-gray-600">
           Aute magna irure deserunt veniam aliqua magna enim voluptate.
-        </p>
+        </p> */}
       </div>
       <form onSubmit={handleSubmit} className="mx-auto mt-16">
         <div className="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2">
@@ -164,7 +164,7 @@ export default function CreateForm() {
                       htmlFor="file-upload"
                       className="relative cursor-pointer rounded-md bg-white font-semibold text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-offset-2 hover:text-indigo-500"
                     >
-                      <span>Upload a file</span>
+                      <span>Sube un archivo</span>
                       <input
                         onChange={handleImageChange}
                         id="file-upload"
@@ -173,10 +173,9 @@ export default function CreateForm() {
                         className="sr-only"
                       />
                     </label>
-                    <p className="pl-1">or drag and drop</p>
                   </div>
                   <p className="text-xs leading-5 text-gray-600">
-                    PNG, JPG, GIF up to 10MB
+                    PNG, JPG, GIF
                   </p>
                 </div>
               )}
@@ -266,28 +265,6 @@ export default function CreateForm() {
               />
             </div>
           </div>
-          <Field className="flex gap-x-4 sm:col-span-2">
-            <div className="flex h-6 items-center">
-              <Switch
-                checked={agreed}
-                onChange={setAgreed}
-                className="group flex w-8 flex-none cursor-pointer rounded-full bg-gray-200 p-px ring-1 ring-inset ring-gray-900/5 transition-colors duration-200 ease-in-out focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 data-[checked]:bg-indigo-600"
-              >
-                <span className="sr-only">Agree to policies</span>
-                <span
-                  aria-hidden="true"
-                  className="h-4 w-4 transform rounded-full bg-white shadow-sm ring-1 ring-gray-900/5 transition duration-200 ease-in-out group-data-[checked]:translate-x-3.5"
-                />
-              </Switch>
-            </div>
-            <Label className="text-sm leading-6 text-gray-600">
-              By selecting this, you agree to our{" "}
-              <a href="#" className="font-semibold text-indigo-600">
-                privacy&nbsp;policy
-              </a>
-              .
-            </Label>
-          </Field>
         </div>
         <div className="mt-10 flex gap-4">
           <button

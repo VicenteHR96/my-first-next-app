@@ -1,19 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
 
-const imgs = [
-  {
-    src: "",
-    alt: "",
-    class: "",
-  },
-  {
-    src: "",
-    alt: "",
-    class: "",
-  },
-];
-
 export default function Collections() {
   return (
     <div className="relative overflow-hidden bg-white">

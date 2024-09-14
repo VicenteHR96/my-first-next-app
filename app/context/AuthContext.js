@@ -50,7 +50,7 @@ export const AuthProvider = ({ children }) => {
     apellido: "",
     about: "",
     email: "",
-    avatar: null,
+    avatar: "",
     telefono: 56,
     rol: "user",
     id: "",

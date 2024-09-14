@@ -1,26 +1,12 @@
 "use client";
-import { PhotoIcon, UserCircleIcon } from "@heroicons/react/24/solid";
-import {
-  collection,
-  doc,
-  getDocs,
-  query,
-  updateDoc,
-  where,
-} from "firebase/firestore";
+import { UserCircleIcon } from "@heroicons/react/24/solid";
+import { doc, updateDoc } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { db, storage } from "../firebase/config";
 import { useAuthContext } from "../context/AuthContext";
 import Swal from "sweetalert2";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { v4 as uuidv4 } from "uuid";
-
-const getDocumentById = async (id) => {
-  const profileRef = collection(db, "usuarios");
-  const q = query(profileRef, where("uid", "==", id));
-  const querySnapshots = await getDocs(q);
-  return querySnapshots.docs[0].data();
-};
 
 const editProfile = async (values) => {
   const telefono = parseInt(values.telefono);
@@ -49,16 +35,22 @@ const editProfile = async (values) => {
 
 export default function DatosPerfil() {
   const [editMode, setEditMode] = useState(false);
-
+  const [originalValues, setOriginalValues] = useState(null);
   const { user, logout, values, setValues } = useAuthContext();
 
-  console.dir(values);
+  // Cuando el modo de edición cambia, almacena los valores originales si entramos en edición
+  useEffect(() => {
+    if (editMode && originalValues === null) {
+      setOriginalValues(values);
+    }
+  }, [editMode, originalValues, values]);
 
   const editButton = () => {
     setEditMode(true);
   };
 
   const cancelEditButton = () => {
+    setValues(originalValues);
     setEditMode(false);
   };
 
@@ -123,10 +115,10 @@ export default function DatosPerfil() {
           <div className="grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
             <div className="col-span-1">
               <label
-                htmlFor="photo"
+                htmlFor="avatar"
                 className="block text-sm font-medium leading-6 text-gray-900"
               >
-                Photo
+                Avatar
               </label>
               <div className="flex items-center gap-x-3">
                 {values.avatar ? (
@@ -157,35 +149,22 @@ export default function DatosPerfil() {
             <div className="sm:col-span-5">
               <label
                 htmlFor="username"
-                className="block text-sm font-medium leading-6 text-gray-900"
+                className="text-base font-semibold leading-7 text-gray-900"
               >
-                Username
+                Bienvenido,
               </label>
               <div className="mt-2">
-                <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-500 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 ">
-                  <span className="flex select-none bg-neutral-100 items-center pl-3 text-gray-500 sm:text-sm">
-                    capellari.com/
-                  </span>
-                  {editMode ? (
-                    <input
-                      id="username"
-                      name="username"
-                      type="text"
-                      placeholder="janesmith"
-                      autoComplete="username"
-                      className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-500 focus:ring-0 sm:text-sm sm:leading-6"
-                    />
-                  ) : (
-                    <input
-                      id="username"
-                      name="username"
-                      type="text"
-                      disabled
-                      placeholder="janesmith"
-                      autoComplete="username"
-                      className="block flex-1 border-0 bg-neutral-100 py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
-                    />
-                  )}
+                <div className="flex">
+                  <label
+                    htmlFor="username"
+                    className="block text-md font-medium leading-6 text-gray-900 font-bold"
+                  >
+                    {values.nombre && values.apellido
+                      ? `${values.nombre} ${values.apellido}`
+                      : values.nombre
+                      ? `${values.nombre}`
+                      : values.email}
+                  </label>
                 </div>
               </div>
             </div>
@@ -195,7 +174,7 @@ export default function DatosPerfil() {
                 htmlFor="about"
                 className="block text-sm font-medium leading-6 text-gray-900"
               >
-                About
+                Acerca de mí
               </label>
               <div className="mt-2">
                 <textarea
@@ -442,18 +421,32 @@ export default function DatosPerfil() {
       </div>
 
       <div className="mt-6 flex items-center justify-end gap-x-6">
-        <button
-          type="button"
-          className="text-sm font-semibold leading-6 text-gray-900"
-        >
-          Cancel
-        </button>
-        <button
-          type="submit"
-          className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-        >
-          Save
-        </button>
+        {editMode ? (
+          <>
+            <button
+              onClick={cancelEditButton}
+              type="button"
+              className="text-sm font-semibold leading-6 text-gray-900"
+            >
+              Cancel
+            </button>
+            <button
+              //   onClick={editButton}
+              type="submit"
+              className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+            >
+              Guardar
+            </button>
+          </>
+        ) : (
+          <button
+            onClick={editButton}
+            type="button"
+            className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+          >
+            Editar
+          </button>
+        )}
       </div>
     </form>
   );

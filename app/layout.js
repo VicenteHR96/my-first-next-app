@@ -4,6 +4,7 @@ import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import { CartProvider } from "./context/CartContext";
 import { AuthProvider } from "./context/AuthContext";
+import { FavProvider } from "./context/FavContext";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -18,13 +19,15 @@ export default function RootLayout({ children }) {
       <body className={inter.className}>
         <AuthProvider>
           <CartProvider>
-            <div className="min-h-screen flex flex-col">
-              <div>
-                <Navbar />
+            <FavProvider>
+              <div className="min-h-screen flex flex-col">
+                <div>
+                  <Navbar />
+                </div>
+                {children}
               </div>
-              {children}
-            </div>
-            <Footer />
+              <Footer />
+            </FavProvider>
           </CartProvider>
         </AuthProvider>
       </body>

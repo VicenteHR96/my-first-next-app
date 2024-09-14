@@ -14,6 +14,7 @@ import {
   BuildingStorefrontIcon,
   Cog6ToothIcon,
   ShoppingCartIcon,
+  StarIcon,
   UserCircleIcon,
   UserIcon,
   XMarkIcon,
@@ -237,6 +238,17 @@ export default function Navbar() {
                             className="h-5 w-5"
                           />
                           Publicaciones
+                        </Link>
+                      </MenuItem>
+                    ) : null}
+                    {user.logged ? (
+                      <MenuItem>
+                        <Link
+                          href="/perfil/favoritos"
+                          className="flex gap-2 px-4 py-2 text-sm text-gray-700 data-[focus]:bg-gray-100"
+                        >
+                          <StarIcon aria-hidden="true" className="h-5 w-5" />
+                          Favoritos
                         </Link>
                       </MenuItem>
                     ) : null}
