@@ -39,12 +39,9 @@ export const revalidate = 3600;
 // };
 
 const getFilteredProducts = async (categoria) => {
-  const data = await fetch(
-    `https://${process.env.VERCEL_URL}/api/productos/${categoria}`,
-    {
-      cache: "no-store",
-    }
-  );
+  const data = await fetch(`${URLBASE}/api/productos/${categoria}`, {
+    cache: "no-store",
+  });
   const products = await data.json();
   return products;
 };
