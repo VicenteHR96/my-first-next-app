@@ -73,6 +73,12 @@ export const AuthProvider = ({ children }) => {
       //   ...values, // Incluye los valores adicionales como nombre, apellido, etc.
       uid: registeredUser.uid,
       email: registeredUser.email,
+      nombre: values.nombre || "",
+      apellido: values.apellido || "",
+      avatar: values.avatar || "",
+      about: values.about || "",
+      telefono: values.telefono || 56,
+      rol: values.rol || "user",
     });
   };
 
